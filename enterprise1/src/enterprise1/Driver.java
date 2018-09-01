@@ -13,7 +13,7 @@ public static void main(String args[]) {
 ////	
 EnterpriseGui labelFrame = new EnterpriseGui();
 labelFrame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-labelFrame.setSize( 650, 650 );
+labelFrame.setSize( 625, 650 );
 labelFrame.setVisible( true );
 labelFrame.setLocationRelativeTo(null);
 ////
