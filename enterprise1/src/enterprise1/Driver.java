@@ -1,20 +1,20 @@
+/* Name: Tyler Carouthers-Childs
+ * Course: CNT 4714 - Fall 2018
+ * Assignment Title: Program 1- Event-driven Programming
+ * Date: Sunday September 9, 2018
+ */
 package enterprise1;
 
 import javax.swing.JFrame;
-import java.awt.FlowLayout; 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
-public class Driver{
+public class Driver extends EnterpriseGui{
 public static void main(String args[]) {
 ////	
 EnterpriseGui labelFrame = new EnterpriseGui();
 labelFrame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-labelFrame.setSize( 800, 400 );
+labelFrame.setSize( 650, 650 );
 labelFrame.setVisible( true );
+labelFrame.setLocationRelativeTo(null);
 ////
 
 }
