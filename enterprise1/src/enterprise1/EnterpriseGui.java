@@ -19,6 +19,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import java.util.Map;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 
+@SuppressWarnings("serial")
 public class EnterpriseGui extends JFrame {
 	private JTextField bookquantity;
 	private JLabel label2;
@@ -60,6 +62,9 @@ public class EnterpriseGui extends JFrame {
 	int flag = 0;
 	
 	String splitBy = ",";
+	
+	DecimalFormat df = new DecimalFormat("0.00");
+
 	
 	public EnterpriseGui()
 		{
@@ -152,16 +157,14 @@ public class EnterpriseGui extends JFrame {
 				///process button
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					int currentCode = Integer.parseInt(bookID.getText());
-					if(bookMap.containsKey(currentCode)) {
+				int currentCode = Integer.parseInt(bookID.getText());
+				if(bookMap.containsKey(currentCode)) {
 						
 						JFrame myFrame = new JFrame("showOptionDialog() Test");
 						myFrame.setLocationByPlatform(true);
 						JOptionPane.showMessageDialog(
 							    myFrame, "Book with ID " +currentCode+" successfully added.");
-						
-						
-						
+					
 					int quantity = Integer.parseInt(bookQuantity.getText());
 					
 					totalQuantity = Integer.parseInt(bookquantity.getText());
@@ -175,7 +178,7 @@ public class EnterpriseGui extends JFrame {
 						List<String> tempList = new ArrayList<>(bookMap.get(currentCode));
 						double tempPrice = Double.parseDouble(tempList.get(1));
 						subTotal += tempPrice * quantity;
-						OrderSubtotalBox.setText("$" + subTotal);
+						OrderSubtotalBox.setText("$" + df.format(subTotal));
 						submitButton.setEnabled(false);
 						 codeTemp = bookID.getText();
 						 nameTemp = tempList.get(0);
@@ -183,7 +186,9 @@ public class EnterpriseGui extends JFrame {
 						 subTotalTemp = tempPrice * quantity;
 						 quantityTemp = quantity;
 						orderButton.setEnabled(true);
+						
 					}
+					
 					else {
 						JFrame myFrame = new JFrame("showOptionDialog() Test");
 						myFrame.setLocationByPlatform(true);
@@ -219,6 +224,8 @@ public class EnterpriseGui extends JFrame {
 					 bookID.setText(null);
 					 ItemInfoBox.setText(null);
 					 bookQuantity.setText(null);
+					 bookID.grabFocus();
+					 
 					 
 					 counter--;
 					 if (counter == 0) {
@@ -231,6 +238,7 @@ public class EnterpriseGui extends JFrame {
 						 bookID.setEditable(false);
 						 bookQuantity.setEditable(false);
 						 bookQuantity.setText(null);
+						 finishOrderButton.setEnabled(true);
 						 
 					 }
 					
@@ -250,7 +258,7 @@ public class EnterpriseGui extends JFrame {
 					JFrame myFrame = new JFrame("showOptionDialog() Test");
 					StringBuilder sb = new StringBuilder();
 					for(int i=0; i<totalQuantity - counter; i++) {
-						sb.append(i+1 +"." + finalOrderCodes.get(i)+" " + finalOrderNames.get(i) + " $" + finalOrderPrice.get(i) + " " + finalOrderQuantity.get(i) + " $" + finalOrderSubtotal.get(i) +"\n");
+						sb.append(i+1 +"." + finalOrderCodes.get(i)+" " + finalOrderNames.get(i) + " $" + df.format(finalOrderPrice.get(i)) + " " + finalOrderQuantity.get(i) + " $" + df.format(finalOrderSubtotal.get(i)) +"\n");
 					}
 					JOptionPane.showMessageDialog(myFrame, sb);
 					
@@ -260,6 +268,7 @@ public class EnterpriseGui extends JFrame {
 			});
 				///finish order button
 			finishOrderButton = new JButton("Finish Order");
+			finishOrderButton.setEnabled(false);
 			finishOrderButton.addActionListener(new ActionListener() {
 
 				@Override
@@ -275,7 +284,7 @@ public class EnterpriseGui extends JFrame {
 						    PrintWriter out = new PrintWriter(bw))
 						{
 							for (int i=0; i<totalQuantity; i++) {
-								 out.println(ft.format(datestamp) + "," + finalOrderCodes.get(i) + "," + finalOrderNames.get(i) + "," + finalOrderPrice.get(i)+ "," + finalOrderQuantity.get(i) + ", Total:" + finalOrderSubtotal.get(i)+" "+ft2.format(finaldate));
+								 out.println(ft.format(datestamp) + "," + finalOrderCodes.get(i) + "," + finalOrderNames.get(i) + "," + df.format(finalOrderPrice.get(i))+ "," + finalOrderQuantity.get(i) + ", Total:" + df.format(finalOrderSubtotal.get(i))+" "+ft2.format(finaldate));
 							}
 						   
 						} catch (IOException e1) {
@@ -289,14 +298,14 @@ public class EnterpriseGui extends JFrame {
 					sb.append("Item#/ID/Title/Price/Qty/Subtotal\n\n");
 				
 					for(int i=0; i<totalQuantity; i++) {
-						sb.append(i+1 +"." + finalOrderCodes.get(i)+" " + finalOrderNames.get(i) + " $" + finalOrderPrice.get(i) + " " + finalOrderQuantity.get(i) + " $" + finalOrderSubtotal.get(i) +"\n");
+						sb.append(i+1 +"." + finalOrderCodes.get(i)+" " + finalOrderNames.get(i) + " $" + df.format(finalOrderPrice.get(i)) + " " + finalOrderQuantity.get(i) + " $" + df.format(finalOrderSubtotal.get(i)) +"\n");
 					}
-					sb.append("Order subtotal: $"+subTotal + "\n\n");
+					sb.append("Order subtotal: $"+df.format(subTotal) + "\n\n");
 					sb.append("Tax rate: 6%\n\n");
 					double taxAmount = subTotal*.06;
-					sb.append("Tax amount: $"+taxAmount+"\n\n");
+					sb.append("Tax amount: $"+df.format(taxAmount)+"\n\n");
 					subTotal+=taxAmount;
-					sb.append("Order total: $"+ subTotal +"\n\n");
+					sb.append("Order total: $"+ df.format(subTotal) +"\n\n");
 					sb.append("Thanks for shopping at Tyler's Book Store");
 					JOptionPane.showMessageDialog(myFrame, sb);
 					finishOrderButton.setEnabled(false);

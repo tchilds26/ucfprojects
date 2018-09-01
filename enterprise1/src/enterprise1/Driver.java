@@ -7,6 +7,7 @@ package enterprise1;
 
 import javax.swing.JFrame;
 
+@SuppressWarnings("serial")
 public class Driver extends EnterpriseGui{
 public static void main(String args[]) {
 ////	
